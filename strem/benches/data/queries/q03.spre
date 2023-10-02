@@ -1,0 +1,1 @@
+[<NONEMPTY>([:pedestrian:]&[:car:])]{1,}[[:pedestrian:]&~<NONEMPTY>([:pedestrian:]&[:car:])]{1,}[<NONEMPTY>([:pedestrian:]&[:car:])]{1,}

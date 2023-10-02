@@ -1,0 +1,1 @@
+[[:pedestrian:]|[:bicycle:]]{1,200}[<NONEMPTY>(([:car:]|[:bus:]|[:truck:])&([:pedestrian:]|[:bicycle:]))]

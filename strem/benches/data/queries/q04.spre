@@ -1,0 +1,1 @@
+[<NONEMPTY>([:pedestrian:]&([:car:]|[:bus:]|[:truck:]))]

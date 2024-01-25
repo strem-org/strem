@@ -1,0 +1,58 @@
+name: Deploy Pages
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  documentation:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: "docs"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+
+      - name: Install Python Packages
+        run: pip install mkdocs mkdocs-material
+
+      - name: Build Documentation
+        run: mkdocs build --strict --config-file="docs/mkdocs.yml"
+
+      # Required by actions/upload-pages-artifact
+      #
+      # For more information, see:
+      # https://github.com/actions/upload-pages-artifact#example-permissions-fix-for-linux
+      - name: Adjust Permissions
+        run: |
+          chmod -c -R +rX "docs/site/" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "docs/site/"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

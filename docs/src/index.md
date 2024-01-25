@@ -1,0 +1,1 @@
+**S**patio **T**emporal **R**egular **E**xpression **M**atcher (STREM) is a fast and efficient tool developed in the [Rust](https://www.rust-lang.org/) language for spatial and temporal pattern matching over perception streams.

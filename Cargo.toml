@@ -1,0 +1,31 @@
+[package]
+name = "strem"
+version = "0.1.0"
+authors = ["Jacob Anderson <andersonjwan@gmail.com>"]
+edition = "2021"
+description = "A tool for spatial and temporal pattern matching over perception streams."
+readme = "README.md"
+homepage = "https://strem-org.github.io/strem/"
+repository = "https://github.com/strem-org/strem"
+license = "BSD-3-Clause"
+keywords = ["regex", "monitoring", "spatial", "temporal", "perception"]
+exclude = [
+    ".gitignore",
+    ".github/*",
+    "docs/*",
+    "examples/*",
+]
+
+[dependencies]
+clap = { version = "4.4.11", features = ["cargo"] }
+image = { version = "0.24.8", optional = true }
+imageproc = { version = "0.23.0", optional = true }
+regex-automata = "0.4.3"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[features]
+export = ["dep:image", "dep:imageproc"]

@@ -1,0 +1,58 @@
+docs_dir: src/
+
+site_name: Spatio-Temporal Regular Expression Matching
+site_url: https://strem-org.github.io/strem
+
+repo_url: https://github.com/strem-org/strem
+repo_name: strem-org/strem
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Getting Started: started/index.md
+      - Features: started/features.md
+      - Running Example: started/example.md
+  - Reference:
+      - Spatial Regular Expressions: reference/spre.md
+      - Data Schema: reference/schema.md
+  - About:
+      - Contributors: about/contributors.md
+      - Contact: about/contact.md
+      - Publications: about/publications.md
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-7
+        name: Toggle Dark Mode
+
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/brightness-4
+        name: Toggle Light Mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.instant
+    - navigation.tabs
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+
+copyright: Copyright &copy; 2023 - 2024 Spatial Regular Expression Matching Organization
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      permalink: "#"

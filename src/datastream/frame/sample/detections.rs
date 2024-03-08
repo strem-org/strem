@@ -8,7 +8,7 @@ use std::path::PathBuf;
 #[derive(Clone, Debug)]
 pub struct DetectionRecord {
     pub channel: String,
-    pub timestamp: String,
+    pub timestamp: f64,
     pub image: Option<Image>,
 
     /// A mapping between labels and annotations (i.e., bounding boxes).
@@ -17,7 +17,7 @@ pub struct DetectionRecord {
 
 impl DetectionRecord {
     /// Create a new [`DetectionRecord`].
-    pub fn new(channel: String, timestamp: String, image: Option<Image>) -> Self {
+    pub fn new(channel: String, timestamp: f64, image: Option<Image>) -> Self {
         DetectionRecord {
             channel,
             timestamp,
@@ -83,13 +83,13 @@ impl Point {
 #[derive(Clone, Debug)]
 pub struct Image {
     pub source: ImageSource,
-    pub width: u32,
-    pub height: u32,
+    pub width: f64,
+    pub height: f64,
 }
 
 impl Image {
     /// Create a new [`Image`].
-    pub fn new(source: ImageSource, width: u32, height: u32) -> Self {
+    pub fn new(source: ImageSource, width: f64, height: f64) -> Self {
         Image {
             source,
             width,

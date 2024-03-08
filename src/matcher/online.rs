@@ -17,8 +17,26 @@ pub struct Matcher<'a> {
 }
 
 impl<'a> Matching for Matcher<'a> {
+    /// Find the leftmost match from the sequence of [`Frame`].
+    ///
+    /// This algorithm utilizes an anchored reverse DFA. Therefore, the `start`
+    /// index needs to be found, accordingly.
+    ///
+    /// The indices of the [`Match`] returned correspond to the indices relative
+    /// to the sequences of [`Frame`] provided. Therefore, it is not necessarily
+    /// true that the [`Match::start`] and [`Match::end`] values correspond to
+    /// the actual index of the [`Frame`].
+    ///
+    /// # Example
+    ///
+    /// If a provided set of six [`Frame`] have indices that range from 5 to 10,
+    /// and the last two match, then the [`Match`] range will be from [4, 6) and
+    /// not [8,10).
+    ///
+    /// As such, the [`Match`] acts as the index relative to the length of the
+    /// slice of [`Frame`] provided.
     fn leftmost(&self, frames: &[Frame]) -> Result<Option<Match>, Box<dyn Error>> {
-        let end: usize = frames.last().unwrap().index + 1;
+        let end: usize = frames.len();
 
         let start = self
             .dfa

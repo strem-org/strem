@@ -74,9 +74,9 @@ impl<'a> Controller<'a> {
         // in the [`Configuration`] struct, it is declared here.
         let mut mcount = 0;
 
-        let mut start = 0;
-        while start < datastream.frames.len() {
-            if let Some(m) = matcher.leftmost(&datastream.frames[start..])? {
+        let mut offset = 0;
+        while offset < datastream.frames.len() {
+            if let Some(m) = matcher.leftmost(&datastream.frames[offset..])? {
                 // Increment `count` and check for limit.
                 //
                 // This is done before display the [`Match`] as a `limit` of 0
@@ -91,14 +91,17 @@ impl<'a> Controller<'a> {
 
                 // Handle [`Match`].
                 if let Some(callback) = self.callback {
-                    callback(&datastream.frames[m.start..m.end], self.config)?;
+                    callback(
+                        &datastream.frames[(offset + m.start)..(offset + m.end)],
+                        self.config,
+                    )?;
                 }
 
-                start = m.end;
+                offset += m.end;
                 continue;
             }
 
-            start += 1;
+            offset += 1;
         }
 
         Ok(())

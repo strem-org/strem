@@ -3,7 +3,7 @@ use std::fmt;
 use std::io::BufReader;
 use std::path::PathBuf;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::datastream::frame::sample::detections::{
     Annotation, BoundingBox, DetectionRecord, Image, ImageSource, Point,
@@ -70,7 +70,7 @@ impl DataImport for DataImporter {
                 let f = &data.frames[self.index];
                 self.index += 1;
 
-                let mut frame = Frame::new(f.index, f.timestamp.clone());
+                let mut frame = Frame::new(f.index, f.timestamp);
 
                 // For each sample, collect the set of relevant annotations and
                 // add to sample map of [`Frame`].
@@ -85,7 +85,7 @@ impl DataImport for DataImporter {
 
                     let mut record = DetectionRecord::new(
                         s.channel.clone(),
-                        s.timestamp.clone(),
+                        s.timestamp,
                         Some(Image::new(
                             ImageSource::File(PathBuf::from(&s.image.path)),
                             s.image.dimensions.width,
@@ -118,52 +118,52 @@ impl DataImport for DataImporter {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremFormat {
-    version: String,
-    frames: Vec<StremFrame>,
+    pub version: String,
+    pub frames: Vec<StremFrame>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremFrame {
-    index: usize,
-    timestamp: String,
-    samples: Vec<StremSample>,
+    pub index: usize,
+    pub timestamp: f64,
+    pub samples: Vec<StremSample>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremSample {
-    channel: String,
-    timestamp: String,
-    image: StremImage,
-    annotations: Vec<StremAnnotation>,
+    pub channel: String,
+    pub timestamp: f64,
+    pub image: StremImage,
+    pub annotations: Vec<StremAnnotation>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremImage {
-    path: String,
-    dimensions: StremDimension,
+    pub path: String,
+    pub dimensions: StremDimension,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremDimension {
-    width: u32,
-    height: u32,
+    pub width: f64,
+    pub height: f64,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremAnnotation {
-    class: String,
-    score: f64,
-    bbox: StremBoundingBox,
+    pub class: String,
+    pub score: f64,
+    pub bbox: StremBoundingBox,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct StremBoundingBox {
-    x: f64,
-    y: f64,
-    w: f64,
-    h: f64,
+    pub x: f64,
+    pub y: f64,
+    pub w: f64,
+    pub h: f64,
 }
 
 #[derive(Debug, Clone)]

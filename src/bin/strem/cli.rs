@@ -9,6 +9,7 @@ use clap::{Arg, ArgAction, Command};
 ///
 /// The structure of the command is organized follows: (1) parser settings,
 /// (2) tool information, (3) positional arguments, (4) flags, and (5) options.
+#[allow(clippy::let_and_return)]
 pub fn build() -> Command {
     let cmd = Command::new(clap::crate_name!())
         .help_expected(true)

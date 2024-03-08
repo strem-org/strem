@@ -4,10 +4,13 @@
 
 use std::error::Error;
 use std::fmt;
+use std::path::Path;
 
+use self::exporter::DataExport;
 use self::frame::Frame;
 use self::importer::DataImport;
 
+pub mod exporter;
 pub mod frame;
 pub mod importer;
 
@@ -22,6 +25,9 @@ pub struct DataStream {
     /// The [`DataImport`] to retrieve [`Frame`] from.
     pub importer: Option<Box<dyn DataImport>>,
 
+    /// The [`DataExport`] to write [`Frame`] from.
+    pub exporter: Option<Box<dyn DataExport>>,
+
     /// A limit on the number of frames to keep in memory.
     pub capacity: Option<usize>,
 }
@@ -35,6 +41,7 @@ impl DataStream {
         DataStream {
             frames: Vec::new(),
             importer: None,
+            exporter: None,
             capacity: None,
         }
     }
@@ -78,6 +85,23 @@ impl DataStream {
     /// the [`DataStream`].
     pub fn append(&mut self, frame: Frame) {
         self.insert(self.frames.len(), frame);
+    }
+
+    /// Set the [`DataExport`].
+    pub fn exporter(mut self, exporter: Box<dyn DataExport>) -> Self {
+        self.exporter = Some(exporter);
+        self
+    }
+
+    /// Export the [`DataStream`] to a file.
+    ///
+    /// This uses the provided `self::exporter`, accordingly.
+    pub fn export(&self, outfile: &Path) -> Result<(), Box<dyn Error>> {
+        if let Some(exporter) = &self.exporter {
+            return exporter.export(&self.frames, outfile);
+        }
+
+        Err(Box::new(DataStreamError::from("missing exporter")))
     }
 }
 

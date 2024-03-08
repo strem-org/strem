@@ -1,0 +1,7 @@
+{
+	"name": "Development Container for Strem",
+	"image": "mcr.microsoft.com/devcontainers/rust:1-1-bullseye",
+	"features": {
+		"ghcr.io/devcontainers/features/rust:1": {}
+	}
+}
